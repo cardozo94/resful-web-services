@@ -1,6 +1,5 @@
 package com.camcar.rest.webservices.resfulwebservices.exception;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ErrorDetails {

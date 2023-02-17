@@ -1,6 +1,7 @@
 package com.camcar.rest.webservices.resfulwebservices.exception;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,12 +29,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
-	
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "Total Errors: "+ex.getErrorCount()+" First Error is "+ex.getFieldError().getDefaultMessage(), request.getDescription(false));
+		String errorMsgFields = ex.getFieldErrors()
+				.stream()
+				.map(fieldError -> "- "+fieldError.getDefaultMessage())
+				.collect(Collectors.joining(". "));
+		
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "Total Errors: "+ex.getErrorCount()+" "+errorMsgFields, request.getDescription(false));
 				
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}

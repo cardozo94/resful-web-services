@@ -16,4 +16,8 @@ public class HelloWorldBean {
 		this.message = message;
 	}
 
+	@Override
+	public String toString() {
+		return "HelloWorldBean [message=" + message + "]";
+	}
 }

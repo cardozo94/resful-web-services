@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -32,11 +31,24 @@ public class UserResource {
 		return service.findAll();
 	}
 	
+	/*@GetMapping("/users/{id}")
+	public User retrieveUser(@PathVariable int id) {
+		return service.findOne(id);
+	}
+	
+	@GetMapping("/users/{id}")
+	public User retrieveUser(@PathVariable int id) {
+		User user =service.findOne(id);
+		if(user == null)
+			throw new UserNotFoundException("User id: "+id+" Not Found");
+		return user;
+	}*/
+	
 	@GetMapping("/users/{id}")
 	public EntityModel<User> retrieveUser(@PathVariable int id) {
 		User user =service.findOne(id);
 		if(user == null)
-			throw new UserNotFoundException("id: "+id);
+			throw new UserNotFoundException("User id: "+id+" Not Found");
 		EntityModel<User> entityModel = EntityModel.of(user);
 		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers());
 		entityModel.add(link.withRel("all-users"));
@@ -47,6 +59,12 @@ public class UserResource {
 	public void deleteUser(@PathVariable int id) {
 		service.deleteById(id);
 	}
+	
+	/*@PostMapping("/users")
+	public void createUser(@RequestBody User user) {
+		service.save(user);
+		
+	}*/
 	
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@Valid @RequestBody	User user) {

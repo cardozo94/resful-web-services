@@ -16,7 +16,8 @@ public class HelloWorldController {
 	public HelloWorldController(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
-	
+
+	//@RequestMapping(method = RequestMethod.GET, path ="/hello-world")
 	@GetMapping(path ="/hello-world")
 	public String helloWorld() {
 		return "Hello World!!";
@@ -27,7 +28,7 @@ public class HelloWorldController {
 		return new HelloWorldBean("Hello World!!");
 	}
 	
-	@GetMapping(path ="/hello-world-bean/path-varaible/{name}")
+	@GetMapping(path ="/hello-world-bean/path-variable/{name}")
 	public HelloWorldBean helloWorldBean(@PathVariable String name) {
 		return new HelloWorldBean(String.format("Hello World, %s!!", name));
 	}
